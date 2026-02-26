@@ -1,0 +1,23 @@
+<?php
+
+use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\CobrosController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AuthController;
+use Illuminate\Support\Facades\Route;
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/login', [AuthController::class, 'authenticate']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::resource('clientes', ClienteController::class);
+    Route::resource('cobros', CobrosController::class);
+	Route::patch('/cobros/{cobro}/pagar', [CobrosController::class, 'pagar'])
+    ->name('cobros.pagar');
+});
