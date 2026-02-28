@@ -13,6 +13,13 @@ Route::get('/', function () {
 Route::get('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/login', [AuthController::class, 'authenticate']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::get('/register', [AuthController::class, 'register'])->name('register');
+Route::post('/register', [AuthController::class, 'storeRegister']);
+Route::get('/api/check-medidor', function (Request $request) {
+    $existe = \App\Models\Cliente::where('numero_medidor', $request->medidor)->exists();
+    return response()->json(['existe' => $existe]);
+});
+
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -20,4 +27,5 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('cobros', CobrosController::class);
 	Route::patch('/cobros/{cobro}/pagar', [CobrosController::class, 'pagar'])
     ->name('cobros.pagar');
+	
 });

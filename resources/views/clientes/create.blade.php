@@ -19,10 +19,40 @@
         </div>
 
         <div class="mb-4">
-            <label class="block text-gray-700 font-bold mb-2">Número de Medidor</label>
-            <input type="text" name="numero_medidor" class="w-full px-3 py-2 border rounded-lg @error('numero_medidor') border-red-500 @enderror" required>
-            @error('numero_medidor') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-        </div>
+    <label class="block text-gray-700 font-bold mb-2">Número de Medidor</label>
+    <input type="text" name="numero_medidor" id="numero_medidor" class="w-full px-3 py-2 border rounded-lg @error('numero_medidor') border-red-500 @enderror" required>
+    <span id="medidor-error" class="text-red-500 text-sm hidden">Este medidor ya existe</span>
+    @error('numero_medidor') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+</div>
+
+
+<script>
+document.getElementById('numero_medidor').addEventListener('blur', async function() {
+    const medidor = this.value;
+    const errorMsg = document.getElementById('medidor-error');
+    const submitBtn = document.getElementById('submit-btn');
+
+    if (medidor.length === 0) return;
+
+    try {
+        const response = await fetch(`/api/check-medidor?medidor=${medidor}`);
+        const data = await response.json();
+
+        if (data.existe) {
+            errorMsg.classList.remove('hidden');
+            submitBtn.disabled = true;
+            submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+        } else {
+            errorMsg.classList.add('hidden');
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+    }
+});
+</script>
+
 
         <div class="mb-4">
             <label class="block text-gray-700 font-bold mb-2">Cuota Mensual</label>
@@ -31,7 +61,7 @@
         </div>
 
         <div class="flex gap-2">
-            <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Crear</button>
+            <button type="submit" id="submit-btn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Crear</button>
             <a href="{{ route('clientes.index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Cancelar</a>
         </div>
     </form>

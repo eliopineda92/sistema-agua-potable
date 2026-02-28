@@ -19,17 +19,18 @@ class ClienteController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'nombre' => 'required|string|max:255',
-            'direccion' => 'required|string|max:255',
-            'numero_medidor' => 'required|string|unique:clientes',
-            'cuota_mensual' => 'required|numeric|min:0',
-        ]);
+{
+    $validated = $request->validate([
+        'nombre' => 'required|string|max:255',
+        'direccion' => 'required|string|max:255',
+        'numero_medidor' => 'required|string|unique:clientes,numero_medidor',
+        'cuota_mensual' => 'required|numeric|min:0',
+    ]);
 
-        Cliente::create($validated);
-        return redirect()->route('clientes.index')->with('success', 'Cliente creado');
-    }
+    Cliente::create($validated);
+    return redirect()->route('clientes.index')->with('success', 'Cliente creado exitosamente');
+}
+
 
     public function show(Cliente $cliente)
     {
