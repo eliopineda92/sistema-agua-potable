@@ -7,6 +7,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Cobro extends Model
 {
+	 protected static function booted(): void
+    {
+        static::observe(CobroObserver::class);
+		static::observe(\App\Observers\CobroObserver::class);
+    }
     protected $fillable = [
         'cliente_id',
 		'periodo',
