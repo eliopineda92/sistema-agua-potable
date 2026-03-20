@@ -8,8 +8,7 @@ class ClientePortalController extends Controller
 {
     public function dashboard()
     {
-        $user = Auth::user();
-        $cliente = $user->cliente;
+        $cliente = Auth::guard('cliente')->user();
 
         $cobrosPendientes = $cliente->cobros()
             ->whereIn('estado', ['pendiente', 'vencido'])

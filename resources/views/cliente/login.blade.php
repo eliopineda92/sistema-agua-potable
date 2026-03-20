@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login - Administración</title>
+    <title>Login - Portal del Cliente</title>
     @vite(['resources/css/app.css'])
 </head>
 <body class="bg-gray-100">
     <div class="flex items-center justify-center min-h-screen">
         <div class="bg-white p-8 rounded-lg shadow-lg w-96">
-            <h1 class="text-2xl font-bold mb-2">Sistema de Agua Potable</h1>
-            <p class="text-gray-600 text-sm mb-6">Portal de Administración</p>
+            <h1 class="text-2xl font-bold mb-2">Portal del Cliente</h1>
+            <p class="text-gray-600 text-sm mb-6">Sistema de Agua Potable</p>
 
             @if($errors->any())
                 <div class="bg-red-100 text-red-700 p-3 rounded mb-4">
-                    {{ $errors->first() }}
+                    @foreach($errors->all() as $error)
+                        <p>{{ $error }}</p>
+                    @endforeach
                 </div>
             @endif
 
-            <form action="{{ route('login') }}" method="POST">
+            <form action="{{ route('cliente.login') }}" method="POST">
                 @csrf
 
                 <div class="mb-4">
@@ -34,7 +36,7 @@
                     </div>
                 </div>
 
-                <button type="submit" class="w-full bg-blue-600 text-white font-bold py-2 rounded-lg hover:bg-blue-700 mb-4">
+                <button type="submit" class="w-full bg-green-600 text-white font-bold py-2 rounded-lg hover:bg-green-700 mb-4">
                     Iniciar Sesión
                 </button>
             </form>
@@ -42,10 +44,16 @@
             <!-- Separator -->
             <div class="border-t border-gray-300 my-6"></div>
 
-            <!-- Cliente Portal Link -->
-            <p class="text-center text-gray-600 text-sm mb-3">¿Eres cliente?</p>
-            <a href="{{ route('cliente.login') }}" class="w-full block text-center bg-green-600 text-white font-bold py-2 rounded-lg hover:bg-green-700">
-                Iniciar Sesión como Cliente
+            <!-- Admin Portal Link -->
+            <p class="text-center text-gray-600 text-sm mb-3">¿No tienes cuenta?</p>
+            <a href="{{ route('cliente.register') }}" class="w-full block text-center bg-blue-600 text-white font-bold py-2 rounded-lg hover:bg-blue-700 mb-4">
+                Registrarse
+            </a>
+
+            <!-- Admin Login Link -->
+            <p class="text-center text-gray-600 text-sm mb-3">¿Eres administrador?</p>
+            <a href="{{ route('login') }}" class="w-full block text-center bg-gray-600 text-white font-bold py-2 rounded-lg hover:bg-gray-700">
+                Panel de Administración
             </a>
         </div>
     </div>

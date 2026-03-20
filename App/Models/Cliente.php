@@ -4,20 +4,32 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
-class Cliente extends Model
+class Cliente extends Authenticatable
 {
+    use Notifiable;
+
     protected $fillable = [
         'nombre',
         'direccion',
         'numero_medidor',
         'cuota_mensual',
         'estado',
+        'email',
+        'password',
     ];
 
-    public function medidores(): HasMany
+    protected $hidden = [
+        'password',
+    ];
+
+    protected function casts(): array
     {
-        return $this->hasMany(Medidor::class);
+        return [
+            'password' => 'hashed',
+        ];
     }
 
     public function cobros(): HasMany

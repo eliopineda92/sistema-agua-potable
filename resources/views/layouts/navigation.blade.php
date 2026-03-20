@@ -12,9 +12,32 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
+                    @if(Auth::user()->hasAnyRole(['admin', 'cajero']))
+                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                            {{ __('Dashboard') }}
+                        </x-nav-link>
+                        <x-nav-link :href="route('clientes.index')" :active="request()->routeIs('clientes.*')">
+                            Clientes
+                        </x-nav-link>
+                        <x-nav-link :href="route('cobros.index')" :active="request()->routeIs('cobros.*')">
+                            Cobros
+                        </x-nav-link>
+                    @endif
+
+                    @if(Auth::user()->hasRole('admin'))
+                        <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')">
+                            Usuarios
+                        </x-nav-link>
+                        <x-nav-link :href="route('roles.index')" :active="request()->routeIs('roles.*')">
+                            Roles
+                        </x-nav-link>
+                    @endif
+
+                    @if(Auth::user()->hasRole('cliente'))
+                        <x-nav-link :href="route('cliente.dashboard')" :active="request()->routeIs('cliente.dashboard')">
+                            Mi Cuenta
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -67,9 +90,32 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
-            </x-responsive-nav-link>
+            @if(Auth::user()->hasAnyRole(['admin', 'cajero']))
+                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    {{ __('Dashboard') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('clientes.index')" :active="request()->routeIs('clientes.*')">
+                    Clientes
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('cobros.index')" :active="request()->routeIs('cobros.*')">
+                    Cobros
+                </x-responsive-nav-link>
+            @endif
+
+            @if(Auth::user()->hasRole('admin'))
+                <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.*')">
+                    Usuarios
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('roles.index')" :active="request()->routeIs('roles.*')">
+                    Roles
+                </x-responsive-nav-link>
+            @endif
+
+            @if(Auth::user()->hasRole('cliente'))
+                <x-responsive-nav-link :href="route('cliente.dashboard')" :active="request()->routeIs('cliente.dashboard')">
+                    Mi Cuenta
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->
