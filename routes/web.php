@@ -26,6 +26,8 @@ Route::get('/api/check-medidor', function (Request $request) {
 
 
 Route::middleware(['auth'])->group(function () {
+	Route::get('/cliente/dashboard', [ClientePortalController::class, 'dashboard'])->name('cliente.dashboard');
+
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('clientes', ClienteController::class);
     Route::resource('cobros', CobrosController::class);
