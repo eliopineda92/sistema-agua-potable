@@ -5,9 +5,16 @@ namespace App\Http\Controllers;
 use App\Models\Cobro;
 use App\Models\Cliente;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class CobrosController extends Controller
 {
+	public function descargarComprobante(Cobro $cobro)
+{
+    $pdf = PDF::loadView('cobros.comprobante', compact('cobro'));
+    return $pdf->download('comprobante-pago-' . $cobro->id . '.pdf');
+}
+
     public function index(Request $request)
 {
     $query = Cobro::with('cliente');
@@ -36,17 +43,35 @@ class CobrosController extends Controller
     }
 public function pagar(Cobro $cobro)
 {
-    if ($cobro->estado === 'pagado') {
-        return back()->with('error', 'Este cobro ya está pagado.');
+    return view('cobros.pagar', compact('cobro'));
+}
+
+public function registrarPago(Request $request, Cobro $cobro)
+{
+    $validated = $request->validate([
+        'monto_pagado' => 'required|numeric|min:0.01',
+        'fecha_pago' => 'required|date',
+        'metodo_pago' => 'required|string',
+        'observaciones' => 'nullable|string',
+    ]);
+
+    $total_cobro = $cobro->monto + $cobro->mora;
+
+    if ($validated['monto_pagado'] > $total_cobro) {
+        return back()->withErrors(['monto_pagado' => 'El monto no puede exceder el total adeudado']);
     }
 
     $cobro->update([
         'estado' => 'pagado',
-        'fecha_pago' => now()
+        'fecha_pago' => $validated['fecha_pago'],
+        'observaciones' => $validated['observaciones'],
+        'metodo_pago' => $validated['metodo_pago'],
+        'monto_pagado' => $validated['monto_pagado'],
     ]);
 
-    return back()->with('success', 'Pago registrado correctamente.');
+    return redirect()->route('cobros.index')->with('success', 'Pago registrado correctamente');
 }
+
 
     public function store(Request $request)
 {

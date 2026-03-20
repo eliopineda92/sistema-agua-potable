@@ -75,15 +75,17 @@
                 <td class="p-3">{{ $cobro->fecha_vencimiento->format('d/m/Y') }}</td>
                 <td class="p-3 space-x-2">
 
-    @if($cobro->estado === 'pendiente')
-        <form action="{{ route('cobros.pagar', $cobro) }}" method="POST" class="inline">
-            @csrf
-            @method('PATCH')
-            <button type="submit" class="text-green-600 hover:underline">
-                Registrar Pago
-            </button>
-        </form>
-    @endif
+   @if($cobro->estado === 'pendiente' || $cobro->estado === 'vencido')
+    <a href="{{ route('cobros.pagar', $cobro) }}" class="text-green-600 hover:underline">Registrar Pago</a>
+		@endif
+
+		@if($cobro->estado === 'pagado')
+    <a href="{{ route('cobros.descargar-comprobante', $cobro) }}" class="text-blue-600 hover:underline">
+        Descargar Comprobante
+    </a>
+		@endif
+
+
 
     <a href="{{ route('cobros.edit', $cobro) }}" class="text-blue-500 hover:underline">
         Editar
@@ -96,6 +98,7 @@
             Eliminar
         </button>
     </form>
+	
 
 </td>
             </tr>
