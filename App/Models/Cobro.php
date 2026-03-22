@@ -10,6 +10,8 @@ class Cobro extends Model
 {
     protected $fillable = [
         'cliente_id',
+        'medidor_id',
+        'lectura_id',
         'periodo',
         'fecha_cobro',
         'monto',
@@ -24,6 +26,8 @@ class Cobro extends Model
         'fecha_cobro' => 'date',
         'fecha_vencimiento' => 'date',
         'fecha_pago' => 'datetime',
+        'monto' => 'decimal:2',
+        'mora' => 'decimal:2',
     ];
 
     protected $dates = [
@@ -35,6 +39,11 @@ class Cobro extends Model
     public function cliente(): BelongsTo
     {
         return $this->belongsTo(Cliente::class);
+    }
+
+    public function medidor(): BelongsTo
+    {
+        return $this->belongsTo(Medidor::class);
     }
 
     protected static function booted(): void

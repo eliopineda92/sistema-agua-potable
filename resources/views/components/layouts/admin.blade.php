@@ -28,6 +28,16 @@
                    class="block px-4 py-2 rounded hover:bg-slate-700 transition">
                     Clientes
                 </a>
+
+                <a href="{{ route('lecturas.index') }}"
+                   class="block px-4 py-2 rounded hover:bg-slate-700 transition">
+                    📊 Lecturas
+                </a>
+
+                <a href="{{ route('reports.index') }}"
+                   class="block px-4 py-2 rounded hover:bg-slate-700 transition">
+                    📈 Reportes
+                </a>
             @endif
 
             @if(Auth::user()->hasAnyRole(['admin', 'cajero']))

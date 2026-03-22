@@ -14,7 +14,6 @@ class Cliente extends Authenticatable
     protected $fillable = [
         'nombre',
         'direccion',
-        'numero_medidor',
         'cuota_mensual',
         'estado',
         'email',
@@ -30,6 +29,11 @@ class Cliente extends Authenticatable
         return [
             'password' => 'hashed',
         ];
+    }
+
+    public function medidores(): HasMany
+    {
+        return $this->hasMany(Medidor::class);
     }
 
     public function cobros(): HasMany
