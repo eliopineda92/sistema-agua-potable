@@ -1,0 +1,14 @@
+.git
+.gitignore
+.env.example
+README.md
+.DS_Store
+node_modules
+storage/logs
+storage/app
+tests
+.editorconfig
+.phpunit.result.cache
+*.md
+.env.testing
+phpunit.xml

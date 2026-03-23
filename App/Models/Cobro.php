@@ -46,6 +46,11 @@ class Cobro extends Model
         return $this->belongsTo(Medidor::class);
     }
 
+    public function lectura(): BelongsTo
+    {
+        return $this->belongsTo(Lectura::class);
+    }
+
     protected static function booted(): void
     {
         static::observe(CobroObserver::class);
